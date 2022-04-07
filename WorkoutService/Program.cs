@@ -39,8 +39,6 @@ namespace WorkoutService
 
             // Thread thread = new Thread(DoRabbitMQ);
             // thread.Start();
-
-            Console.WriteLine("test");
         }
 
         private static void DoRabbitMQ()
