@@ -13,5 +13,10 @@ namespace WorkoutService.Models
             FirstName = firstName;
             LastName = lastName;
         }
+
+        public override string ToString()
+        {
+            return $"{nameof(Id)}: {Id}, {nameof(Username)}: {Username}, {nameof(FirstName)}: {FirstName}, {nameof(LastName)}: {LastName}";
+        }
     }
 }

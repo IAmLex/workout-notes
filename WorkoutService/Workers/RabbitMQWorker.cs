@@ -1,6 +1,9 @@
 using System.Text;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using WorkoutService.Contexts;
+using WorkoutService.Models;
 
 namespace WorkoutService.Workers
 {
@@ -10,11 +13,13 @@ namespace WorkoutService.Workers
         private ConnectionFactory _factory;
         private IConnection _connection;
         private IModel _channel;
-        private const string QueueName = "user"; // TODO: rename 'user' to 'user-queue' in UserService project
+        private const string QueueName = "user";
+        private readonly UserContext _userContext;
 
-        public RabbitMQWorker(ILogger<RabbitMQWorker> logger)
+        public RabbitMQWorker(ILogger<RabbitMQWorker> logger, UserContext userContext)
         {
             _logger = logger;
+            _userContext = userContext;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -54,6 +59,20 @@ namespace WorkoutService.Workers
                 var message = Encoding.UTF8.GetString(body);
 
                 _logger.LogInformation($"Received message: {message}");
+
+                var user = JsonConvert.DeserializeObject<User>(message);
+
+                if (user != null)
+                {
+                    _userContext.Users.Add(user);
+                    _userContext.SaveChanges();
+
+                    _logger.LogInformation($"User {user.Username} added to database");
+                }
+                else
+                {
+                    _logger.LogError("User is null");
+                }
 
                 await Task.Delay(1000);
             };

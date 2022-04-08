@@ -1,8 +1,4 @@
-using System;
-using System.Text;
-using System.Threading;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
+using WorkoutService.Contexts;
 using WorkoutService.Workers;
 
 namespace WorkoutService
@@ -20,6 +16,10 @@ namespace WorkoutService
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Singletons
+            builder.Services.AddSingleton<UserContext>();
+
+            // Hosted services
             builder.Services.AddHostedService<RabbitMQWorker>();
 
             var app = builder.Build();
@@ -38,35 +38,13 @@ namespace WorkoutService
 
             app.MapControllers();
 
-            app.Run();
-
-            // Thread thread = new Thread(DoRabbitMQ);
-            // thread.Start();
-        }
-
-        private static void DoRabbitMQ()
-        {
-            ConnectionFactory factory = new ConnectionFactory() { HostName = "localhost" };
-            using (IConnection connection = factory.CreateConnection())
-            using (IModel channel = connection.CreateModel())
+            // FIXME: Kan dit beter? Singleton?
+            using (var context = new UserContext())
             {
-                channel.QueueDeclare(queue: "user",
-                                     durable: false,
-                                     exclusive: false,
-                                     autoDelete: false,
-                                     arguments: null);
-
-                var consumer = new EventingBasicConsumer(channel);
-                consumer.Received += (model, eventArgs) =>
-                {
-                    var body = eventArgs.Body.ToArray();
-                    var message = Encoding.UTF8.GetString(body);
-                    Console.WriteLine(" [x] Received {0}", message);
-                };
-                channel.BasicConsume(queue: "user",
-                                     autoAck: true,
-                                     consumer: consumer);
+                context.Database.EnsureCreated();
             }
+
+            app.Run();
         }
     }
 }
