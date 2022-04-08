@@ -24,7 +24,6 @@ namespace WorkoutService
 
             var app = builder.Build();
 
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -38,11 +37,8 @@ namespace WorkoutService
 
             app.MapControllers();
 
-            // FIXME: Kan dit beter? Singleton?
-            using (var context = new UserContext())
-            {
-                context.Database.EnsureCreated();
-            }
+            var userContext = builder.Services.BuildServiceProvider().GetService<UserContext>();
+            userContext?.Database.EnsureCreated();
 
             app.Run();
         }

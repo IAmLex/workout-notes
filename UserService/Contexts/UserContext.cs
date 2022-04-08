@@ -6,10 +6,16 @@ namespace UserService.Contexts
     public class UserContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        private readonly IConfiguration _configuration;
+
+        public UserContext(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("server=localhost;port=3306;database=user;user=root;password=Welkom32!");
+            optionsBuilder.UseMySQL(_configuration.GetConnectionString("DefaultConnection"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

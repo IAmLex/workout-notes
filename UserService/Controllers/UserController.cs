@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using UserService.Contexts;
+using UserService.Helpers;
 using UserService.Interfaces;
 using UserService.Models;
+using UserService.Types;
 
 namespace UserService.Controllers 
 {   
@@ -11,11 +13,13 @@ namespace UserService.Controllers
     {
         private readonly UserContext _context;
         private readonly IMessageProducer _producer;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IMessageProducer producer, UserContext context)
+        public UserController(IMessageProducer producer, UserContext context, ILogger<UserController> logger)
         {
             _producer = producer;
             _context = context;
+            _logger = logger;
         }
 
         [HttpGet()]
@@ -25,9 +29,11 @@ namespace UserService.Controllers
         }
 
         [HttpGet("{id}")]
-        public User Get(int id)
+        public IActionResult Get(int id)
         {
-            return _context.Users.Find(id);
+            var user = _context.Users.Find(id);
+
+            return user != null ? Ok(user) : NotFound($"User with id {id} not found");
         }
 
         [HttpPost]
@@ -36,7 +42,7 @@ namespace UserService.Controllers
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            _producer.SendMessage(user);
+            _producer.SendMessage(user.ToDTO(), RoutingKeyType.UserCreated);
 
             return Ok(user);
         }
@@ -52,9 +58,10 @@ namespace UserService.Controllers
             userToUpdate.Username = user.Username;
             userToUpdate.FirstName = user.FirstName;
             userToUpdate.LastName = user.LastName;
+
             _context.SaveChanges();
 
-            // TODO: Inform rabbitMQ
+            _producer.SendMessage(userToUpdate.ToDTO(), RoutingKeyType.UserUpdated);
 
             return Ok(userToUpdate);
         }
@@ -70,7 +77,7 @@ namespace UserService.Controllers
             _context.Users.Remove(userToDelete);
             _context.SaveChanges();
 
-            // TODO: Inform rabbitMQ
+            _producer.SendMessage(userToDelete.ToDTO(), RoutingKeyType.UserDeleted);
 
             return Ok(userToDelete);
         }
