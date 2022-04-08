@@ -10,7 +10,7 @@ namespace WorkoutService.Workers
         private ConnectionFactory _factory;
         private IConnection _connection;
         private IModel _channel;
-        private const string QueueName = "user-queue"; // TODO: rename 'user' to 'user-queue' in UserService project
+        private const string QueueName = "user"; // TODO: rename 'user' to 'user-queue' in UserService project
 
         public RabbitMQWorker(ILogger<RabbitMQWorker> logger)
         {
@@ -19,7 +19,8 @@ namespace WorkoutService.Workers
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            _factory = new ConnectionFactory() { 
+            _factory = new ConnectionFactory()
+            {
                 HostName = "localhost",
                 DispatchConsumersAsync = true
             };
@@ -35,7 +36,6 @@ namespace WorkoutService.Workers
             _channel.BasicQos(0, 1, false);
 
             _logger.LogInformation("RabbitMQWorker started");
-            System.Console.WriteLine("RabbitMQWorker started");
 
             return base.StartAsync(cancellationToken);
         }
@@ -44,25 +44,29 @@ namespace WorkoutService.Workers
         {
             stoppingToken.ThrowIfCancellationRequested();
 
-            var consumer = new EventingBasicConsumer(_channel);
+            var consumer = new AsyncEventingBasicConsumer(_channel);
 
-            consumer.Received += (model, eventArgs) =>
+            consumer.Received += async (model, eventArgs) =>
             {
+                _logger.LogInformation("Message received");
+
                 var body = eventArgs.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
-                Console.WriteLine(" [x] Received {0}", message);
+
+                _logger.LogInformation($"Received message: {message}");
+
+                await Task.Delay(1000);
             };
 
-            _channel.BasicConsume(queue: "user",
-                                 autoAck: true,
-                                 consumer: consumer);
+            _channel.BasicConsume(queue: QueueName,
+                                  autoAck: true,
+                                  consumer: consumer);
 
             await Task.CompletedTask;
         }
 
         public override Task StopAsync(CancellationToken cancellationToken)
         {
-            _channel.Close();
             _connection.Close();
 
             _logger.LogInformation("RabbitMQWorker stopped");

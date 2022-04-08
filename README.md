@@ -50,5 +50,6 @@ Packages:
 ### Worker Service
 
 [Worker service](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services?view=aspnetcore-6.0&tabs=netcore-cli)
+[Tutorial](https://www.c-sharpcorner.com/article/how-to-call-background-service-from-net-core-web-api/)
 
 - Microsoft.Extensions.Hosting

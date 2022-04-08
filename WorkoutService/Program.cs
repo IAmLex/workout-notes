@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using WorkoutService.Workers;
 
 namespace WorkoutService
 {
@@ -18,6 +19,8 @@ namespace WorkoutService
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddHostedService<RabbitMQWorker>();
 
             var app = builder.Build();
 
@@ -63,7 +66,6 @@ namespace WorkoutService
                 channel.BasicConsume(queue: "user",
                                      autoAck: true,
                                      consumer: consumer);
-
             }
         }
     }
