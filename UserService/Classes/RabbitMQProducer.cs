@@ -18,7 +18,11 @@ namespace UserService.RabbitMQ
         {
             _logger.LogInformation($"Sending message {message} with routing key {routingKey}");
 
-            ConnectionFactory factory = new ConnectionFactory() { HostName = "localhost" };
+            ConnectionFactory factory = new ConnectionFactory() { 
+                HostName = "localhost",
+                UserName = "developer",
+                Password = "Welkom32!",
+            };
 
             using (IConnection connection = factory.CreateConnection())
             using (IModel channel = connection.CreateModel())

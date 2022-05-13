@@ -5,7 +5,7 @@ using UserService.Interfaces;
 using UserService.Models;
 using UserService.Types;
 
-namespace UserService.Controllers 
+namespace UserService.Controllers
 {   
     [ApiController]
     [Route("[controller]")]
@@ -22,7 +22,7 @@ namespace UserService.Controllers
             _logger = logger;
         }
 
-        [HttpGet()]
+        [HttpGet]
         public IEnumerable<User> Get()
         {
             return _context.Users;

@@ -1,4 +1,7 @@
 using WorkoutService.Contexts;
+using WorkoutService.Interfaces;
+using WorkoutService.Repositories;
+using WorkoutService.Services;
 using WorkoutService.Workers;
 
 namespace WorkoutService
@@ -16,10 +19,14 @@ namespace WorkoutService
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Singletons
-            builder.Services.AddSingleton<UserContext>();
+            builder.Services.AddSingleton<WorkoutContext>();
 
-            // Hosted services
+            builder.Services.AddSingleton<WorkoutService_>();
+            builder.Services.AddSingleton<ExerciseService>();
+
+            builder.Services.AddSingleton<IWorkoutRepository, WorkoutRepository>();
+            builder.Services.AddSingleton<IExerciseRepository, ExerciseRepository>();
+
             builder.Services.AddHostedService<RabbitMQWorker>();
 
             var app = builder.Build();
@@ -37,7 +44,7 @@ namespace WorkoutService
 
             app.MapControllers();
 
-            var userContext = builder.Services.BuildServiceProvider().GetService<UserContext>();
+            var userContext = builder.Services.BuildServiceProvider().GetService<WorkoutContext>();
             userContext?.Database.EnsureCreated();
 
             app.Run();

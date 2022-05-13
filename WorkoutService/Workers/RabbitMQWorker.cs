@@ -14,12 +14,12 @@ namespace WorkoutService.Workers
         private ConnectionFactory _factory;
         private IConnection _connection;
         private IModel _channel;
-        private readonly UserContext _userContext;
+        private readonly WorkoutContext _workoutContext;
 
-        public RabbitMQWorker(ILogger<RabbitMQWorker> logger, UserContext userContext)
+        public RabbitMQWorker(ILogger<RabbitMQWorker> logger, WorkoutContext workoutContext)
         {
             _logger = logger;
-            _userContext = userContext;
+            _workoutContext = workoutContext;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -27,6 +27,8 @@ namespace WorkoutService.Workers
             _factory = new ConnectionFactory()
             {
                 HostName = "localhost",
+                UserName = "developer",
+                Password = "Welkom32!",
                 DispatchConsumersAsync = true
             };
 
@@ -35,6 +37,12 @@ namespace WorkoutService.Workers
 
             _channel.ExchangeDeclare(exchange: "user-exchange",
                                      type: ExchangeType.Topic);
+
+            _channel.QueueDeclare(queue: "user-queue", 
+                                  durable: false,
+                                  exclusive: false,
+                                  autoDelete: false,
+                                  arguments: null);
 
             var routingKeys = new[]
             {
@@ -77,18 +85,18 @@ namespace WorkoutService.Workers
                     switch (eventArgs.RoutingKey)
                     {
                         case RoutingKeyType.UserCreated:
-                            _userContext.Users.Add(user);
-                            _userContext.SaveChanges();
+                            _workoutContext.Users.Add(user);
+                            _workoutContext.SaveChanges();
 
                             _logger.LogInformation($"User {user.Username} added to database");
 
                             break;
                         case RoutingKeyType.UserUpdated:
-                            User? userToUpdate = _userContext.Users.Find(user.Id);
+                            User? userToUpdate = _workoutContext.Users.Find(user.Id);
                             if (userToUpdate == null)
                             {
                                 // add user
-                                _userContext.Users.Add(user);
+                                _workoutContext.Users.Add(user);
 
                                 _logger.LogInformation($"User {user.Username} with id {user.Id} didn't exist in database, added to database");
                             }
@@ -102,16 +110,16 @@ namespace WorkoutService.Workers
                                 _logger.LogInformation($"User {user.Username} updated in database");
                             }
 
-                            _userContext.SaveChanges();
+                            _workoutContext.SaveChanges();
 
                             break;
                         case RoutingKeyType.UserDeleted:
-                            User? userToDelete = _userContext.Users.Find(user.Id);
+                            User? userToDelete = _workoutContext.Users.Find(user.Id);
 
                             if (userToDelete != null)
                             {
-                                _userContext.Users.Remove(userToDelete);
-                                _userContext.SaveChanges();
+                                _workoutContext.Users.Remove(userToDelete);
+                                _workoutContext.SaveChanges();
 
                                 _logger.LogInformation($"User {user.Username} deleted from database");
                             }

@@ -23,7 +23,7 @@ namespace UserService
             builder.Services.AddSingleton<UserContext>();
 
             var app = builder.Build();
-
+            
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
