@@ -26,7 +26,7 @@ namespace WorkoutService.Workers
         {
             _factory = new ConnectionFactory()
             {
-                HostName = "localhost",
+                HostName = "rabbit-mq",
                 UserName = "developer",
                 Password = "Welkom32!",
                 DispatchConsumersAsync = true

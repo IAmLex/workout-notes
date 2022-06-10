@@ -2,6 +2,18 @@
 
 ## Containers
 
+### Services
+
+``` BASH
+docker build -t workout-service .
+docker run -d -p 8080:80 --name workout-service workout-service
+```
+
+``` BASH
+docker build -t UserService .
+docker run -d -p 8081:80 --name workout-service UserService
+```
+
 ### RabbitMQ
 
 ``` BASH
@@ -20,7 +32,6 @@ docker run --name user -p 3306:3306 -p 33060:33060 -e MYSQL_ROOT_PASSWORD=Welkom
 # mysql:latest@workout
 docker run --name workout -p 3307:3306 -p 33061:33060 -e MYSQL_ROOT_PASSWORD=Welkom32! -d mysql:latest
 ```
-
 ## Research
 
 ### Worker service
