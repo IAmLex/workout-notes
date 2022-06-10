@@ -15,7 +15,7 @@ namespace WorkoutService.Controllers
         {
             _exerciseService = exerciseService;
 
-            // Actions tries: 5
+            // Actions tries: 6
         }
 
         [HttpPost]
