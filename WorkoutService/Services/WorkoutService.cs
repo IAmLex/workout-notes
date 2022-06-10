@@ -45,7 +45,7 @@ namespace WorkoutService.Services
                 }
             }
 
-            _workoutRepository.Post(workout);
+            workout = _workoutRepository.Post(workout);
 
             return WorkoutHelper.ToDTO(workout);
         }

@@ -21,7 +21,7 @@ namespace WorkoutService.Repositories
             return exercises;
         }
 
-        public Exercise Get(int id)
+        public Exercise? Get(int id)
         {
             var exercise = _context.Exercises.Find(id);
             if (exercise == null) throw new Exception("Exercise not found");
