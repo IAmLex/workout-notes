@@ -1,0 +1,29 @@
+name: .NET Workout Service
+
+on:
+  push:
+    paths:
+      - 'WorkoutService/**'
+    branches: [ "master" ]
+  pull_request:
+    paths:
+      - 'WorkoutService/**'
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore ./WorkoutService
+    - name: Build
+      run: dotnet build ./WorkoutService --no-restore
+    - name: Test
+      run: dotnet test ./WorkoutService.Test --no-build --verbosity normal
