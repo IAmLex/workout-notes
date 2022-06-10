@@ -21,6 +21,11 @@ namespace WorkoutService.Repositories
             return workouts;
         }
 
+        public Workout? Get(int id)
+        {
+            return _context.Workouts.Find(id);
+        }
+
         public Workout Post(Workout workout)
         {
             _context.Workouts.Add(workout);

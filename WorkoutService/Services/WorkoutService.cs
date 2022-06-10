@@ -21,6 +21,14 @@ namespace WorkoutService.Services
             return WorkoutHelper.ToDTO(_workoutRepository.Get());
         }
 
+        public ShowWorkoutDTO? Get(int id)
+        {
+            var workout = _workoutRepository.Get(id);
+            if (workout == null) return null;
+
+            return WorkoutHelper.ToDTO(workout);
+        }
+
         public ShowWorkoutDTO Post(CreateWorkoutDTO workoutDTO)
         {
             var workout = new Workout

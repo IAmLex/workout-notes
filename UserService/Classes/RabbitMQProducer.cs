@@ -28,7 +28,8 @@ namespace UserService.RabbitMQ
             using (IModel channel = connection.CreateModel())
             {
                 channel.ExchangeDeclare(exchange: "user-exchange", 
-                                        type: ExchangeType.Topic);
+                                        type: ExchangeType.Topic,
+                                        durable: true);
 
                 string messageBody = JsonConvert.SerializeObject(message);
                 byte[] body = Encoding.UTF8.GetBytes(messageBody);

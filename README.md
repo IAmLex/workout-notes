@@ -53,3 +53,9 @@ Packages:
 [Tutorial](https://www.c-sharpcorner.com/article/how-to-call-background-service-from-net-core-web-api/)
 
 - Microsoft.Extensions.Hosting
+
+## TODO
+
+- Add docker
+- Add kubernetes
+- Add unit tests

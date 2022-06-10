@@ -24,6 +24,15 @@ namespace WorkoutService.Controllers
             return _workoutService.Get();
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var workout = _workoutService.Get(id);
+            if (workout == null) return NotFound("Workout not found");
+
+            return Ok(workout);
+        }
+
         [HttpPost]
         public ShowWorkoutDTO Post([FromBody] CreateWorkoutDTO workout)
         {

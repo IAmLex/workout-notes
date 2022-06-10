@@ -36,7 +36,8 @@ namespace WorkoutService.Workers
             _channel = _connection.CreateModel();
 
             _channel.ExchangeDeclare(exchange: "user-exchange",
-                                     type: ExchangeType.Topic);
+                                     type: ExchangeType.Topic,
+                                     durable: true);
 
             _channel.QueueDeclare(queue: "user-queue", 
                                   durable: false,
