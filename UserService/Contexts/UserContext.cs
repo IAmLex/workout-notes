@@ -5,7 +5,7 @@ namespace UserService.Contexts
 {
     public class UserContext : DbContext
     {
-        // Actions tries: 1
+        // Actions tries: 2
         
         public DbSet<User> Users { get; set; }
         private readonly IConfiguration _configuration;
