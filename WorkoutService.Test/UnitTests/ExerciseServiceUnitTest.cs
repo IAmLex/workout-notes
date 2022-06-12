@@ -1,6 +1,8 @@
 using WorkoutService.DTOs;
 using WorkoutService.Services;
 using WorkoutService.Stubs;
+using FluentAssertions;
+using Moq;
 
 namespace WorkoutService.Test
 {
@@ -27,7 +29,8 @@ namespace WorkoutService.Test
             var exercises = _exerciseService.Get();
 
             // Assert
-            Assert.AreEqual(exercises.Count, expectedAmount);
+            exercises.Should().BeOfType<List<ShowExerciseDTO>>();
+            exercises.Count.Should().Be(expectedAmount);
         }
 
         [TestMethod]
@@ -47,6 +50,7 @@ namespace WorkoutService.Test
             var exercise = _exerciseService.Get(1);
 
             // Assert
+            exercise.Should().BeOfType<ShowExerciseDTO>();
             Assert.AreEqual(exercise.Id, expectedExercise.Id);
             Assert.AreEqual(exercise.Name, expectedExercise.Name);
             Assert.AreEqual(exercise.Sets, expectedExercise.Sets);

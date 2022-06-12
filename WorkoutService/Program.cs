@@ -27,6 +27,17 @@ namespace WorkoutService
             builder.Services.AddSingleton<IWorkoutRepository, WorkoutRepository>();
             builder.Services.AddSingleton<IExerciseRepository, ExerciseRepository>();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
+
             builder.Services.AddHostedService<RabbitMQWorker>();
 
             var app = builder.Build();
@@ -43,6 +54,8 @@ namespace WorkoutService
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.UseCors("AllowAll");
 
             var userContext = builder.Services.BuildServiceProvider().GetService<WorkoutContext>();
             userContext?.Database.EnsureCreated();

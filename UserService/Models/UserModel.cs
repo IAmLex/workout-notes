@@ -9,6 +9,8 @@ namespace UserService.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+        // TODO: Add created at and updated at
+
         public User(string username, string firstName, string lastName)
         {
             Username = username;

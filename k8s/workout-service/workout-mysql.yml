@@ -15,4 +15,4 @@ spec:
       container:
         - image: mysql:5.6
       name: mysql
-      env:
+      env: 

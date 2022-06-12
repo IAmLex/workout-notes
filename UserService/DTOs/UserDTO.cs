@@ -8,6 +8,8 @@ namespace UserService.DTOs
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+        // TODO: Add created at
+
         public UserDTO(int id, string username, string email, string firstName, string lastName)
         {
             Id = id;
