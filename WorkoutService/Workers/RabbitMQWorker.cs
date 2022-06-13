@@ -29,6 +29,7 @@ namespace WorkoutService.Workers
                 HostName = "rabbitmq-service",
                 UserName = "guest",
                 Password = "guest",
+                Port = 5672,
                 DispatchConsumersAsync = true
             };
 
