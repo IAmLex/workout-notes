@@ -27,8 +27,6 @@ namespace WorkoutService.Workers
             _factory = new ConnectionFactory()
             {
                 HostName = "rabbitmq-service",
-                UserName = "guest",
-                Password = "guest",
                 Port = 5672,
                 DispatchConsumersAsync = true
             };
