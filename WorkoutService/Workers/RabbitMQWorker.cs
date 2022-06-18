@@ -15,21 +15,22 @@ namespace WorkoutService.Workers
         private IConnection _connection;
         private IModel _channel;
         private readonly WorkoutContext _workoutContext;
+        private readonly IConfiguration _configuration;
 
-        public RabbitMQWorker(ILogger<RabbitMQWorker> logger, WorkoutContext workoutContext)
+        public RabbitMQWorker(ILogger<RabbitMQWorker> logger, WorkoutContext workoutContext, IConfiguration configuration)
         {
             _logger = logger;
             _workoutContext = workoutContext;
+            _configuration = configuration;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
             _factory = new ConnectionFactory()
             {
-                HostName = "localhost",
-                Port = 5672,
-                UserName = "developer",
-                Password = "Welkom32!",
+                HostName = _configuration.GetSection("RabbitMQ:Hostname").Value,
+                UserName = _configuration.GetSection("RabbitMQ:Username").Value,
+                Password = _configuration.GetSection("RabbitMQ:Password").Value,
                 DispatchConsumersAsync = true
             };
 
