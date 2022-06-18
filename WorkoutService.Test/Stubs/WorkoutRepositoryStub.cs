@@ -44,5 +44,10 @@ namespace WorkoutService.Stubs
         {
             throw new NotImplementedException();
         }
+
+        public Workout Put(Workout workout)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

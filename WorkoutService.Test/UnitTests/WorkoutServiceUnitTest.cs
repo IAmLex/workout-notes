@@ -11,7 +11,7 @@ namespace WorkoutService.Test
 
         public WorkoutServiceUnitTest() 
         {
-            _workoutService = new WorkoutService_(new WorkoutRepositoryStub(), new ExerciseRepositoryStub());
+            _workoutService = new WorkoutService_(new WorkoutRepositoryStub(), new ExerciseRepositoryStub(), null);
         }
 
         [TestMethod]
