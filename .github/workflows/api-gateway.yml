@@ -1,13 +1,13 @@
-name: .NET User Service
+name: .NET API Gateway
 
 on:
   push:
     paths:
-      - 'UserService/**'
+      - 'ApiGateway/**'
     branches: [ "master" ]
   pull_request:
     paths:
-      - 'UserService/**'
+      - 'ApiGateway/**'
     branches: [ "master" ]
 
 jobs:
