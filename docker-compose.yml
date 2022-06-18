@@ -27,6 +27,12 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "Welkom32!"
 
+  user-service:
+    image: user-service:latest
+    container_name: user-service
+    ports:
+      - "8081:80"
+
   rabbit-mq:
     image: rabbitmq:3-management
     container_name: rabbit-mq

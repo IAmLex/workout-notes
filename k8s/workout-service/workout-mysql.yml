@@ -1,18 +1,80 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: workout-storage-pv
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: '/mnt/data'
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: workout-storage-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: workout-storage-service
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: workout-storage-delpoyment
+  clusterIP: None
+---
 apiVersion: apps/v1
 kind: Deployment
-metadata: mysql
+metadata:
+  name: workout-storage-delpoyment
 spec:
   selector:
     matchLabels:
-      app: mysql
+      app: workout-storage-delpoyment
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: mysql
+        app: workout-storage-delpoyment
     spec:
-      container:
-        - image: mysql:5.6
-      name: mysql
-      env: 
+      containers:
+      - image: mysql:8.0
+        name: workout-storage-delpoyment
+        env:
+        - name: MYSQL_DATABASE
+          value: workout
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+             name: mysql-password
+             key: password
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: workout-storage-pv
+          mountPath: /var/lib/mysql
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "100m" 
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+      volumes:
+      - name: workout-storage-pv
+        persistentVolumeClaim:
+          claimName: workout-storage-pvc
