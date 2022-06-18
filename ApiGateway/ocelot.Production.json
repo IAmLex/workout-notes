@@ -1,0 +1,71 @@
+{
+    "Routes": [
+      {
+        "DownstreamPathTemplate": "/workout",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "workout-service-service",
+            "Port": 5182
+          }
+        ],
+        "UpstreamPathTemplate": "/api/workout",
+        "UpstreamHttpMethod": [ "Get" ],
+        "AuthenticationOptions": {
+          "AuthenticationProviderKey": "Bearer",
+          "AllowedScopes": []
+        }
+      },
+      {
+        "DownstreamPathTemplate": "/workout/{id}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "workout-service-service",
+            "Port": 5182
+          }
+        ],
+        "UpstreamPathTemplate": "/api/workout/{id}",
+        "UpstreamHttpMethod": [ "Get" ]
+      },
+      {
+        "DownstreamPathTemplate": "/user",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "user-service-service",
+            "Port": 5159
+          }
+        ],
+        "UpstreamPathTemplate": "/api/user",
+        "UpstreamHttpMethod": [ "Get" ]
+      },
+      {
+        "DownstreamPathTemplate": "/user/login",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "user-service-service",
+            "Port": 5159
+          }
+        ],
+        "UpstreamPathTemplate": "/api/login",
+        "UpstreamHttpMethod": [ "Post" ]
+      },
+      {
+        "DownstreamPathTemplate": "/user/register",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "user-service-service",
+            "Port": 5159
+          }
+        ],
+        "UpstreamPathTemplate": "/api/register",
+        "UpstreamHttpMethod": [ "Post" ]
+      }
+    ],
+    "GlobalConfiguration": {
+      "BaseUrl": "https://localhost:5000"
+    }
+  }

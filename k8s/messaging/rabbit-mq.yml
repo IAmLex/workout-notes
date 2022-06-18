@@ -33,8 +33,8 @@ spec:
           - name: RABBITMQ_PASSWORD
             valueFrom: 
               secretKeyRef:
-              name: rabbit-mq-password
-              key: password
+                name: rabbit-mq-password
+                key: password
           image: rabbitmq:3.9-management
           ports:
             - containerPort: 5672
