@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service-deployment
+  labels:
+    app: user-service-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: user-service-deployment
+  template:
+    metadata:
+      labels:
+        app: user-service-deployment
+    spec:
+      containers:
+        - name: app
+          image: lexfuny/user-service:master
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: user-service-service
+  name: user-service-service
+spec:
+  ports:
+    - name: 'http'
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: user-service-service
