@@ -8,10 +8,12 @@ namespace UserService.RabbitMQ
     class RabbitMQProducer : IMessageProducer
     {
         private readonly ILogger<RabbitMQProducer> _logger;
+        private readonly IConfiguration _configuration;
 
-        public RabbitMQProducer(ILogger<RabbitMQProducer> logger)
+        public RabbitMQProducer(ILogger<RabbitMQProducer> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
         }
 
         public void SendMessage<T>(T message, string routingKey)
@@ -19,9 +21,9 @@ namespace UserService.RabbitMQ
             _logger.LogInformation($"Sending message {message} with routing key {routingKey}");
 
             ConnectionFactory factory = new ConnectionFactory() { 
-                HostName = "localhost",
-                UserName = "developer",
-                Password = "Welkom32!",
+                HostName = _configuration.GetSection("RabbitMQ:Hostname").Value,
+                UserName = _configuration.GetSection("RabbitMQ:Username").Value,
+                Password = _configuration.GetSection("RabbitMQ:Password").Value,
             };
 
             using (IConnection connection = factory.CreateConnection())

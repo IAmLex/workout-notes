@@ -33,7 +33,7 @@ spec:
   ports:
   - port: 3306
   selector:
-    app: user-storage-delpoyment
+    app: user-storage
   clusterIP: None
 ---
 apiVersion: apps/v1
@@ -58,15 +58,12 @@ spec:
         - name: MYSQL_DATABASE
           value: user
         - name: MYSQL_ROOT_PASSWORD
-          valueFrom: 
-            secretKeyRef:
-             name: user-service-mysql-password
-             key: password
+          value: Welkom32!
         ports:
         - containerPort: 3306
         volumeMounts:
         - name: user-storage-pv
-          mountPath: /var/lib/mysql
+          mountPath: /mnt/data
         resources:
           requests:
             memory: "100Mi"

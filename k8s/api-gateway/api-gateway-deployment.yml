@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: api-gateway-deployment
   labels:
-    app: api-gateway-deployment
+    app: api-gateway
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: api-gateway-deployment
+      app: api-gateway
   template:
     metadata:
       labels:
-        app: api-gateway-deployment
+        app: api-gateway
     spec:
       containers:
         - name: app
@@ -26,17 +26,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    app: api-gateway-service
   name: api-gateway-service
 spec:
   ports:
-    - name: 'http'
-      protocol: TCP
+    - protocol: TCP
       port: 80
       targetPort: 80
   selector:
-    app: api-gateway-service
+    app: api-gateway
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

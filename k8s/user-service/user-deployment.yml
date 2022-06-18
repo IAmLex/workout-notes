@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: user-service-deployment
   labels:
-    app: user-service-deployment
+    app: user-service
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: user-service-deployment
+      app: user-service
   template:
     metadata:
       labels:
-        app: user-service-deployment
+        app: user-service
     spec:
       containers:
         - name: app
@@ -26,8 +26,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    app: user-service-service
   name: user-service-service
 spec:
   ports:
@@ -36,4 +34,22 @@ spec:
       port: 80
       targetPort: 80
   selector:
-    app: user-service-service
+    app: user-service
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: user-service-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /user
+        pathType: Prefix
+        backend:
+          service:
+            name: user-service-service
+            port:
+              number: 80

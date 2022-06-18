@@ -6,7 +6,7 @@
         "DownstreamHostAndPorts": [
           {
             "Host": "workout-service-service",
-            "Port": 5182
+            "Port": 80
           }
         ],
         "UpstreamPathTemplate": "/api/workout",
@@ -22,7 +22,7 @@
         "DownstreamHostAndPorts": [
           {
             "Host": "workout-service-service",
-            "Port": 5182
+            "Port": 80
           }
         ],
         "UpstreamPathTemplate": "/api/workout/{id}",
@@ -34,7 +34,7 @@
         "DownstreamHostAndPorts": [
           {
             "Host": "user-service-service",
-            "Port": 5159
+            "Port": 80
           }
         ],
         "UpstreamPathTemplate": "/api/user",
@@ -46,7 +46,7 @@
         "DownstreamHostAndPorts": [
           {
             "Host": "user-service-service",
-            "Port": 5159
+            "Port": 80
           }
         ],
         "UpstreamPathTemplate": "/api/login",
@@ -58,7 +58,7 @@
         "DownstreamHostAndPorts": [
           {
             "Host": "user-service-service",
-            "Port": 5159
+            "Port": 80
           }
         ],
         "UpstreamPathTemplate": "/api/register",
@@ -66,6 +66,6 @@
       }
     ],
     "GlobalConfiguration": {
-      "BaseUrl": "https://localhost:5000"
+      "BaseUrl": "http://localhost:80"
     }
   }

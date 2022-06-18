@@ -66,7 +66,7 @@ spec:
         - containerPort: 3306
         volumeMounts:
         - name: workout-storage-pv
-          mountPath: /var/lib/mysql
+          mountPath: /mnt/mysql
         resources:
           requests:
             memory: "100Mi"
