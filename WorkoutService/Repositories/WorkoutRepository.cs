@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using WorkoutService.Contexts;
 using WorkoutService.Interfaces;
 using WorkoutService.Models;
@@ -23,12 +24,24 @@ namespace WorkoutService.Repositories
 
         public Workout? Get(int id)
         {
-            return _context.Workouts.Find(id);
+            return _context.Workouts
+                .Where(w => w.Id == id)
+                .Include(w => w.User)
+                .SingleOrDefault();
         }
 
         public Workout Post(Workout workout)
         {
             _context.Workouts.Add(workout);
+            
+            _context.SaveChanges();
+
+            return workout;
+        }
+
+        public Workout Put(Workout workout)
+        {
+            _context.Workouts.Update(workout);
             _context.SaveChanges();
 
             return workout;

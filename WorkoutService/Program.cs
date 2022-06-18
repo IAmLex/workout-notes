@@ -1,3 +1,6 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using WorkoutService.Contexts;
 using WorkoutService.Interfaces;
 using WorkoutService.Repositories;
@@ -19,6 +22,20 @@ namespace WorkoutService
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                            builder.Configuration.GetSection("AppSettings:Token").Value)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                }
+            );
+
             builder.Services.AddSingleton<WorkoutContext>();
 
             builder.Services.AddSingleton<WorkoutService_>();
@@ -26,6 +43,7 @@ namespace WorkoutService
 
             builder.Services.AddSingleton<IWorkoutRepository, WorkoutRepository>();
             builder.Services.AddSingleton<IExerciseRepository, ExerciseRepository>();
+            builder.Services.AddSingleton<IUserRepository, UserRepository>();
 
             builder.Services.AddCors(options =>
             {
@@ -51,6 +69,7 @@ namespace WorkoutService
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

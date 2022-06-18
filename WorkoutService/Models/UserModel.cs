@@ -6,6 +6,7 @@ namespace WorkoutService.Models
         public string Username { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public List<Workout> Workouts { get; set; }
 
         public User(string username, string firstName, string lastName)
         {

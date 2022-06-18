@@ -9,11 +9,13 @@ namespace WorkoutService.Services
     {
         private readonly IWorkoutRepository _workoutRepository;
         private readonly IExerciseRepository _exerciseRepository;
+        private readonly IUserRepository _userRepository;
 
-        public WorkoutService_(IWorkoutRepository workoutRepository, IExerciseRepository exerciseRepository)
+        public WorkoutService_(IWorkoutRepository workoutRepository, IExerciseRepository exerciseRepository, IUserRepository userRepository)
         {
             _workoutRepository = workoutRepository;
             _exerciseRepository = exerciseRepository;
+            _userRepository = userRepository;
         }
 
         public List<ShowWorkoutDTO> Get()
@@ -29,11 +31,12 @@ namespace WorkoutService.Services
             return WorkoutHelper.ToDTO(workout);
         }
 
-        public ShowWorkoutDTO Post(CreateWorkoutDTO workoutDTO)
+        public ShowWorkoutDTO Post(int userId, CreateWorkoutDTO workoutDTO)
         {
             var workout = new Workout
             {
                 Name = workoutDTO.Name,
+                User = _userRepository.Get(userId),
                 CreatedAt = DateTime.Now,
             };
 
@@ -41,13 +44,26 @@ namespace WorkoutService.Services
             {
                 foreach (var id in workoutDTO.ExerciseIDs)
                 {
-                    workout.Exercises.Add(_exerciseRepository.Get(id));
+                    var exercise = _exerciseRepository.Get(id);
+                    if (exercise == null) continue;
+
+                    workout.Exercises.Add(exercise);
                 }
             }
 
             workout = _workoutRepository.Post(workout);
 
             return WorkoutHelper.ToDTO(workout);
+        }
+
+        public Workout? Put(int id, Workout workout)
+        {
+            var workoutToUpdate = _workoutRepository.Get(id);
+            if (workoutToUpdate == null) return null;
+
+            if (workout.Name != null) workoutToUpdate.Name = workout.Name;
+
+            return _workoutRepository.Put(workoutToUpdate);
         }
     }
 }

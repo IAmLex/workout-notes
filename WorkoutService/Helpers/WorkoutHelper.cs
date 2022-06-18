@@ -11,6 +11,7 @@ namespace WorkoutService.Helpers
             {
                 Id = workout.Id,
                 Name = workout.Name,
+                User = UserHelper.ToDTO(workout.User),
                 Exercises = workout.Exercises.Select(x => ExerciseHelper.ToDTO(x)).ToList(),
                 CreatedAt = workout.CreatedAt
             };
@@ -19,6 +20,14 @@ namespace WorkoutService.Helpers
         public static List<ShowWorkoutDTO> ToDTO(List<Workout> workouts)
         {
             return workouts.Select(x => ToDTO(x)).ToList();
+        }
+        
+        public static Workout ToModel(UpdateWorkoutDTO workoutDTO)
+        {
+            return new Workout
+            {
+                Name = workoutDTO.Name,
+            };
         }
     }
 }

@@ -7,5 +7,6 @@ namespace WorkoutService.Interfaces
         List<Workout> Get();
         Workout? Get(int id);
         Workout Post(Workout workout);
+        Workout Put(Workout workout);
     }
 }

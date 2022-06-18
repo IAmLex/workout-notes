@@ -2,11 +2,12 @@ using RabbitMQ.Client;
 using UserService.Contexts;
 using UserService.Interfaces;
 using UserService.RabbitMQ;
+using UserService.Services;
 
 namespace UserService
 {
     class Program
-    {
+{
         static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,7 @@ namespace UserService
 
             // Injections
             builder.Services.AddSingleton<IMessageProducer, RabbitMQProducer>();
+            builder.Services.AddSingleton<UserService_>();
             builder.Services.AddSingleton<UserContext>();
 
             var app = builder.Build();
