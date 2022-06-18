@@ -14,6 +14,8 @@ namespace ApiGateway
     {
         public static void Main(string[] args)
         {
+            // Github actiosn test: 1
+
             new WebHostBuilder()
             .UseKestrel()
             .UseContentRoot(Directory.GetCurrentDirectory())
