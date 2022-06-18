@@ -14,7 +14,7 @@ namespace ApiGateway
     {
         public static void Main(string[] args)
         {
-            // Github actiosn test: 1
+            // Github actiosn test: 2
 
             new WebHostBuilder()
             .UseKestrel()
