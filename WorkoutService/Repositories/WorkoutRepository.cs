@@ -16,7 +16,7 @@ namespace WorkoutService.Repositories
 
         public List<Workout> Get()
         {
-            var workouts = _context.Workouts.ToList();
+            var workouts = _context.Workouts.Include(w => w.User).ToList();
             if (workouts == null) throw new Exception("No workouts found");
 
             return workouts;
@@ -27,7 +27,7 @@ namespace WorkoutService.Repositories
             return _context.Workouts
                 .Where(w => w.Id == id)
                 .Include(w => w.User)
-                .SingleOrDefault();
+                .FirstOrDefault();
         }
 
         public Workout Post(Workout workout)

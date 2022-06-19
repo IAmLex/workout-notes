@@ -76,8 +76,8 @@ namespace WorkoutService
 
             app.UseCors("AllowAll");
 
-            var userContext = builder.Services.BuildServiceProvider().GetService<WorkoutContext>();
-            userContext?.Database.EnsureCreated();
+            var workoutContext = builder.Services.BuildServiceProvider().GetService<WorkoutContext>();
+            workoutContext?.Database.EnsureCreated();
 
             app.Run();
         }
