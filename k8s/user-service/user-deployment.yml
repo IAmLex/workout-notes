@@ -35,21 +35,3 @@ spec:
       targetPort: 80
   selector:
     app: user-service
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: user-service-ingress
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-spec:
-  rules:
-  - http:
-      paths:
-      - path: /user
-        pathType: Prefix
-        backend:
-          service:
-            name: user-service-service
-            port:
-              number: 80

@@ -29,6 +29,30 @@
         "UpstreamHttpMethod": [ "Get" ]
       },
       {
+        "DownstreamPathTemplate": "/workout",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "workout-service-service",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/api/workout",
+        "UpstreamHttpMethod": [ "Post" ]
+      },
+      {
+        "DownstreamPathTemplate": "/workout/{id}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "workout-service-service",
+            "Port": 80
+          }
+        ],
+        "UpstreamPathTemplate": "/api/workout/{id}",
+        "UpstreamHttpMethod": [ "Put" ]
+      },
+      {
         "DownstreamPathTemplate": "/user",
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
