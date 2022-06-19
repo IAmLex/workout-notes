@@ -10,11 +10,11 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "Welkom32!"
 
-  # workout-service:
-  #   image: workout-service:latest
-  #   container_name: workout-service
-  #   ports:
-  #     - "8080:80"
+  workout-service:
+    image: lexfuny/workout-service:master
+    container_name: workout-service
+    ports:
+      - "8080:80"
 
   user-storage:
     image: mysql:latest
@@ -28,7 +28,7 @@ services:
       MYSQL_ROOT_PASSWORD: "Welkom32!"
 
   user-service:
-    image: user-service:latest
+    image: lexfuny/user-service:master
     container_name: user-service
     ports:
       - "8081:80"
